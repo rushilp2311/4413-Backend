@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.DS_Store
+src/main/java/.DS_Store
+src/main/java/com/.DS_Store
+src/main/java/.DS_Store
+src/main/java/com/project/bookstore/model/.DS_Store
+src/main/java/com/project/bookstore/.DS_Store
+src/main/java/com/project/bookstore/model/.DS_Store
