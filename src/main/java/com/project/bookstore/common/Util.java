@@ -1,0 +1,55 @@
+package com.project.bookstore.common;
+
+import com.project.bookstore.controller.UserController;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
+
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+
+public class Util {
+
+  static Logger log = LoggerFactory.getLogger(UserController.class);
+
+
+  public static String getJsonResponse(int code, @Nullable String user_id){
+    JSONObject json = new JSONObject();
+
+    switch (code){
+      case WConstants.INVALID_USER_SIGNUP_DATA:
+        json.put("status", WConstants.RESPONSE_FAIL);
+        json.put("message", "Data was invalid, please try again.");
+        break;
+      case WConstants.RESULT_UNKNOWN_ERROR:
+        json.put("status", WConstants.RESPONSE_FAIL);
+        json.put("message", "Unknown error. Please try again.");
+    }
+
+    if(user_id != null){
+      json.put("user", user_id);
+    }
+
+    return json.toString();
+  }
+
+  /**
+   * Hashing with SHA1
+   *
+   * @param input String to hash
+   * @return String hashed
+   */
+  public static String sha1(String input) {
+    String sha1 = null;
+    try {
+      MessageDigest msdDigest = MessageDigest.getInstance("SHA-1");
+      msdDigest.update(input.getBytes("UTF-8"), 0, input.length());
+      sha1 = DatatypeConverter.printHexBinary(msdDigest.digest());
+    } catch (Exception e) {
+      log.error("Error hashing password.");
+    }
+    return sha1;
+  }
+
+}

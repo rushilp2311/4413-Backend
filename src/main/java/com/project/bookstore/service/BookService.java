@@ -1,12 +1,11 @@
 package com.project.bookstore.service;
 
-import com.project.bookstore.model.Book;
+import com.project.bookstore.model.BookEntity;
 import com.project.bookstore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,10 +16,10 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    public List<Book> getAllBooks(Integer offset) throws Exception {
+    public List<BookEntity> getAllBooks(Integer offset) throws Exception {
         if (offset > 0) {
 
-            List<Book> books = new ArrayList<>();
+            List<BookEntity> books = new ArrayList<>();
             try {
                 books = bookRepository.findAllBook((offset - 1) * 10);
 
