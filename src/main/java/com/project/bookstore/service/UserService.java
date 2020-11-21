@@ -19,7 +19,7 @@ public class UserService {
     json.put("status", WConstants.RESPONSE_SUCCESS);
 
     if(!userEntity.isValid()){
-      json.put("message", "Data invalid. Please try again.");
+      return Util.getJsonResponse(WConstants.INVALID_USER_SIGNUP_DATA, null);
     }
 
     if(userRepository.isUserAlreadyExist(userEntity.getEmail())){

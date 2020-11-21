@@ -104,7 +104,7 @@ public class UserEntity {
 
   public boolean isValid(){
     return !StringUtils.isEmpty(email) && !StringUtils.isEmpty(first_name) && !StringUtils.isEmpty(last_name) && !StringUtils.isEmpty(password)
-            && email.length() > 0 && email.length() <= 40 && password.length() > 6 && password.length() <= 80 && first_name.length() > 0 && first_name.length() < 30
+            && email.length() > 0 && email.length() <= 40 && password.length() >= 6 && password.length() <= 80 && first_name.length() > 0 && first_name.length() < 30
             && last_name.length() > 0 && last_name.length() < 30;
   }
 }

@@ -24,15 +24,16 @@ public class UserController {
   UserService userService;
 
   @RequestMapping(value = "/signup", method = RequestMethod.POST)
-  public String signup(@RequestParam String data){
-    log.debug("Entered user signup");
+  public String signup(@RequestParam (name = "firstName") String first_name, @RequestParam(name = "lastName") String last_name,
+                       @RequestParam (name = "email") String email, @RequestParam (name = "password") String password){
+    log.debug(String.format("Entered user signup for user: %s, email: %s", first_name, email));
 
-    if(StringUtils.isEmpty(data)){
-      return Util.getJsonResponse(WConstants.INVALID_USER_SIGNUP_DATA, null);
-    }
+//    if(StringUtils.isEmpty(data)){
+//      return Util.getJsonResponse(WConstants.INVALID_USER_SIGNUP_DATA, null);
+//    }
     ObjectMapper mapper = new ObjectMapper();
     try {
-      UserEntity user = mapper.readValue(data, UserEntity.class);
+      UserEntity user = new UserEntity(null, first_name, last_name, email, password, 0);
       return userService.singupUser(user);
     } catch (Exception e) {
       log.error(e.getMessage(), e);

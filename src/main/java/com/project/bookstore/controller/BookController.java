@@ -22,7 +22,6 @@ public class BookController {
         try {
             return bookService.getAllBooks(pageno);
         }catch (Exception e) {
-
             throw new Exception(e);
         }
     }
