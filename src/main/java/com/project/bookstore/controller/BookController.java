@@ -26,4 +26,19 @@ public class BookController {
             throw new Exception(e);
         }
     }
+
+    /*
+     * Controller to get all the categories
+     * @return List of Category
+     * */
+    @GetMapping("/getAllCategory")
+    public List<String> getAllCategory() throws Exception {
+        try {
+            return bookService.getAllCategory();
+        }catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+
+
 }
