@@ -35,4 +35,14 @@ public class BookService {
             return new ArrayList<>();
         }
     }
+    public List<String> getAllCategory() throws Exception {
+        List<String> categories = new ArrayList<>();
+        try {
+            categories = bookRepository.findAllCategory();
+        }
+        catch(Exception e) {
+            throw new Exception(e);
+        }
+        return categories;
+    }
 }
