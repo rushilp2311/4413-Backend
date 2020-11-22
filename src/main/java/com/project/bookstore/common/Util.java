@@ -14,10 +14,10 @@ public class Util {
   static Logger log = LoggerFactory.getLogger(UserController.class);
 
 
-  public static String getJsonResponse(int code, @Nullable String user_id){
+  public static String getJsonResponse(int statusCode, @Nullable String user_id){
     JSONObject json = new JSONObject();
 
-    switch (code){
+    switch (statusCode){
       case WConstants.INVALID_USER_SIGNUP_DATA:
         json.put("status", WConstants.RESPONSE_FAIL);
         json.put("message", "Data was invalid, please try again.");
@@ -25,6 +25,15 @@ public class Util {
       case WConstants.RESULT_UNKNOWN_ERROR:
         json.put("status", WConstants.RESPONSE_FAIL);
         json.put("message", "Unknown error. Please try again.");
+        break;
+      case WConstants.RESULT_INVALID_CREDENTIALS:
+        json.put("status", WConstants.RESPONSE_FAIL);
+        json.put("message", "Invalid email or password");
+        break;
+      case WConstants.RESULT_USER_DOES_NOT_EXIST:
+        json.put("status", WConstants.RESPONSE_FAIL);
+        json.put("message", "User does not exist. Try signing up instead.");
+        break;
     }
 
     if(user_id != null){
@@ -51,5 +60,6 @@ public class Util {
     }
     return sha1;
   }
+
 
 }
