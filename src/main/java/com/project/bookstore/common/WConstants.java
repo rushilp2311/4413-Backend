@@ -12,8 +12,24 @@ public class WConstants {
 
   // Error Codes
   public static final int INVALID_USER_SIGNUP_DATA = -1;
+  public static final int RESULT_USER_ALREADY_EXISTS = -2;
+  public static final int RESULT_INVALID_CREDENTIALS = -3;
+  public static final int RESULT_USER_DOES_NOT_EXIST = -4;
 
-  public static final int RESULT_USER_ALREADY_EXISTS = -1;
+
+  // User types
+  public enum UserType {
+    USER(0),
+    ADMIN(1);
+
+    private final int value;
+    UserType(final int value){
+      this.value = value;
+    }
+    public int getValue(){
+      return value;
+    }
+  }
 
 
 }

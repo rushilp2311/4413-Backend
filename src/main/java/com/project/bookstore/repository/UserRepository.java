@@ -5,10 +5,12 @@ import com.project.bookstore.common.WConstants;
 import com.project.bookstore.controller.UserController;
 import com.project.bookstore.model.UserEntity;
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -31,14 +33,14 @@ public class UserRepository {
   public int signupUser(UserEntity userEntity){
     Session session = getSession();
     try{
-      Query query = session.createNativeQuery("insert into user(USER_ID, FIRST_NAME, LAST_NAME, USER_TYPE, EMAIL, PASSWORD" +
+      Query<?> query = session.createNativeQuery("insert into user(USER_ID, FIRST_NAME, LAST_NAME, USER_TYPE, EMAIL, PASSWORD" +
               ") VALUES (:user_id, :f_name, :l_name, :user_type, :email, :password)");
       query.setParameter("user_id", UUID.randomUUID().toString());
       query.setParameter("f_name", userEntity.getFirst_name());
       query.setParameter("l_name", userEntity.getLast_name());
-      query.setParameter("user_type", 0); // todo: replace this with the correct user_type based on visitor, user, partner...
+      query.setParameter("user_type", WConstants.UserType.USER.getValue()); // todo: replace this with the correct user_type based on visitor, user, partner...
       query.setParameter("email", userEntity.getEmail());
-      query.setParameter("password", Util.sha1(userEntity.getPassword()));
+      query.setParameter("password", (userEntity.getPassword()));
       return query.executeUpdate();
     } catch (Exception e){
       log.error(e.getMessage(), e);
@@ -47,15 +49,28 @@ public class UserRepository {
   }
 
   @Transactional
-  public boolean isUserAlreadyExist(String email){
+  public boolean isUserExist(String email){
     Session session = getSession();
     try{
-      Query query = session.createNativeQuery("select * from user where email = :email");
+      Query<?> query = session.createNativeQuery("select * from user where email = :email");
       query.setParameter("email", email);
       return query.getSingleResult() != null;
     } catch (Exception e){
       log.error(e.getMessage(), e);
       return false;
+    }
+  }
+
+  public UserEntity findUser(String email){
+    Session session = getSession();
+    try{
+      Query<?> query = session.createNativeQuery("select * from user where EMAIL = :email and USER_TYPE = :user_type").addEntity(UserEntity.class);
+      query.setParameter("email", email);
+      query.setParameter("user_type", WConstants.UserType.USER.getValue());
+      return (UserEntity)query.getSingleResult();
+    } catch (Exception e){
+      log.error(e.getMessage(), e);
+      return null;
     }
   }
 
