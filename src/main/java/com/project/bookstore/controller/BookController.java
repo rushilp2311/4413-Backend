@@ -22,8 +22,11 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    //Controller to get all books based on page no. Accepts 'pageno' as a query parameter
-
+    /**
+     * @param pageno
+     * @return list of next 10 books based on pageNo offset
+     * @throws Exception
+     */
     @GetMapping("/getAllBooks")
     public List<BookEntity> getAllBooks(@RequestParam(required = false, defaultValue = "1") Integer pageno) throws Exception {
         try {
@@ -34,9 +37,20 @@ public class BookController {
         }
     }
 
+    /* returns books based on category name */
+    @GetMapping("/findByCategory")
+    public List<BookEntity> findBooksByCategory(@RequestParam String category) throws Exception {
+        try {
+            return bookService.getBooksByCategory(category);
+        }catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return null;
+        }
+    }
+
     /*
      * Controller to get all the categories
-     * @return List of Category
+     * @return List of all Category
      * */
     @GetMapping("/getAllCategory")
     public List<String> getAllCategory() throws Exception {
@@ -53,7 +67,7 @@ public class BookController {
      * @return book entity as a JSON String (with indentation), otherwise error with status code and message
      * @apiNote for both client and partners
      */
-    @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
+    @GetMapping("/getProductInfo")
     public String getBookInfo(@RequestParam(name = "bid")String bid){
         log.debug(String.format("Entered getProductInfo for bid: %s", bid));
         ObjectMapper mapper = new ObjectMapper();
@@ -77,7 +91,7 @@ public class BookController {
      * @param title: book title/seach query
      * @return list of all books containing that title word
      */
-    @RequestMapping(value = "/searchByTitle", method = RequestMethod.GET)
+    @GetMapping("/searchByTitle")
     public List<BookEntity> searchBooksByTitle(@RequestParam(name = "title") String title){
         log.debug(String.format("Entered searchBooksByTitle for title: %s", title));
         try{
