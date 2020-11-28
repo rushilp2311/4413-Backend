@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,7 +54,23 @@ public class BookService {
             return null;
         }
         return bookRepository.findBookEntityByBid(bid);
+    }
 
+    public List<BookEntity> searchBooksByTitle(String title) throws Exception{
+        List<BookEntity> res = new ArrayList<>();
+
+        try{
+            List<BookEntity> books = bookRepository.getAllBooks(title);
+            for(BookEntity b: books){
+                if(b.getTitle().contains(title)){
+                    res.add(b);
+                }
+            }
+
+        } catch (Exception e){
+            throw new Exception(e);
+        }
+        return res;
     }
 
 }

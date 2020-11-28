@@ -27,7 +27,7 @@ public class BookController {
     //Controller to get all books based on page no. Accepts 'pageno' as a query parameter
 
     @GetMapping("/getAllBooks")
-    public List<BookEntity> getAllBooks(@RequestParam(required = false) Integer pageno) throws Exception {
+    public List<BookEntity> getAllBooks(@RequestParam(required = false, defaultValue = "1") Integer pageno) throws Exception {
         try {
             return bookService.getAllBooks(pageno);
         }catch (Exception e) {
@@ -52,7 +52,8 @@ public class BookController {
 
     /**
      * @param bid
-     * @return book entity as a JSON String, otherwise error with status code and message
+     * @return book entity as a JSON String (with indentation), otherwise error with status code and message
+     * @apiNote for both client and partners
      */
     @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
     public String getBookInfo(@RequestParam(name = "bid", required = true)String bid){
@@ -70,6 +71,17 @@ public class BookController {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);
+        }
+    }
+
+    @RequestMapping(value = "/searchByTitle", method = RequestMethod.GET)
+    public List<BookEntity> searchBooksByTitle(@RequestParam(name = "title") String title){
+        log.debug(String.format("Entered searchBooksByTitle for title: %s", title));
+        try{
+            return bookService.searchBooksByTitle(title);
+        } catch (Exception e){
+            log.error(e.getMessage(), e);
+            return null;
         }
     }
 
