@@ -50,6 +50,10 @@ public class BookController {
         }
     }
 
+    /**
+     * @param bid
+     * @return book entity as a JSON String, otherwise error with status code and message
+     */
     @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
     public String getBookInfo(@RequestParam(name = "bid", required = true)String bid){
         log.debug(String.format("Entered getProductInfo for bid: %s", bid));
