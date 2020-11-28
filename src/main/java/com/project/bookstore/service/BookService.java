@@ -4,6 +4,7 @@ import com.project.bookstore.model.BookEntity;
 import com.project.bookstore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class BookService {
             return new ArrayList<>();
         }
     }
+
     public List<String> getAllCategory() throws Exception {
         List<String> categories = new ArrayList<>();
         try {
@@ -45,4 +47,13 @@ public class BookService {
         }
         return categories;
     }
+
+    public BookEntity getBookInfo(String bid){
+        if(StringUtils.isEmpty(bid)){
+            return null;
+        }
+        return bookRepository.findBookEntityByBid(bid);
+
+    }
+
 }

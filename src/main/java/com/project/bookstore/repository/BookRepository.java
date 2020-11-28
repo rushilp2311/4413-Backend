@@ -15,4 +15,7 @@ public interface BookRepository extends CrudRepository<BookEntity, String> {
 
     @Query(value = "select CATEGORY from book group by CATEGORY", nativeQuery = true)
     List<String> findAllCategory();
+
+    @Query(value = "select * from book where bid = :bid", nativeQuery = true)
+    BookEntity findBookEntityByBid(String bid);
 }
