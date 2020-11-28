@@ -1,13 +1,11 @@
 package com.project.bookstore.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.bookstore.common.Util;
 import com.project.bookstore.common.WConstants;
 import com.project.bookstore.model.BookEntity;
 import com.project.bookstore.service.BookService;
 import org.json.JSONObject;
-import org.json.JSONString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +54,7 @@ public class BookController {
      * @apiNote for both client and partners
      */
     @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
-    public String getBookInfo(@RequestParam(name = "bid", required = true)String bid){
+    public String getBookInfo(@RequestParam(name = "bid")String bid){
         log.debug(String.format("Entered getProductInfo for bid: %s", bid));
         ObjectMapper mapper = new ObjectMapper();
         try{
@@ -74,6 +72,11 @@ public class BookController {
         }
     }
 
+    /**
+     *
+     * @param title: book title/seach query
+     * @return list of all books containing that title word
+     */
     @RequestMapping(value = "/searchByTitle", method = RequestMethod.GET)
     public List<BookEntity> searchBooksByTitle(@RequestParam(name = "title") String title){
         log.debug(String.format("Entered searchBooksByTitle for title: %s", title));

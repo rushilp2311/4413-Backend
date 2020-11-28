@@ -61,6 +61,7 @@ public class UserRepository {
     }
   }
 
+  @Transactional
   public UserEntity findUser(String email){
     Session session = getSession();
     try{

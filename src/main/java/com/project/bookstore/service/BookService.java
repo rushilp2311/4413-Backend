@@ -8,7 +8,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +38,7 @@ public class BookService {
     }
 
     public List<String> getAllCategory() throws Exception {
-        List<String> categories = new ArrayList<>();
+        List<String> categories;
         try {
             categories = bookRepository.findAllCategory();
         }
@@ -56,21 +55,15 @@ public class BookService {
         return bookRepository.findBookEntityByBid(bid);
     }
 
+
     public List<BookEntity> searchBooksByTitle(String title) throws Exception{
-        List<BookEntity> res = new ArrayList<>();
-
+        List<BookEntity> books;
         try{
-            List<BookEntity> books = bookRepository.getAllBooks(title);
-            for(BookEntity b: books){
-                if(b.getTitle().contains(title)){
-                    res.add(b);
-                }
-            }
-
+             books = bookRepository.searchBooksByTitle(title);
         } catch (Exception e){
             throw new Exception(e);
         }
-        return res;
+        return books;
     }
 
 }
