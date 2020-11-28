@@ -38,7 +38,7 @@ public class BookService {
     }
 
     public List<String> getAllCategory() throws Exception {
-        List<String> categories = new ArrayList<>();
+        List<String> categories;
         try {
             categories = bookRepository.findAllCategory();
         }
@@ -53,7 +53,17 @@ public class BookService {
             return null;
         }
         return bookRepository.findBookEntityByBid(bid);
+    }
 
+
+    public List<BookEntity> searchBooksByTitle(String title) throws Exception{
+        List<BookEntity> books;
+        try{
+             books = bookRepository.searchBooksByTitle(title);
+        } catch (Exception e){
+            throw new Exception(e);
+        }
+        return books;
     }
 
 }

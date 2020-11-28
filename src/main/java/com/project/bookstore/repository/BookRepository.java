@@ -18,4 +18,8 @@ public interface BookRepository extends CrudRepository<BookEntity, String> {
 
     @Query(value = "select * from book where bid = :bid", nativeQuery = true)
     BookEntity findBookEntityByBid(String bid);
+
+    @Query(value = "select * from book where upper(title) like '%' || upper(?1) || '%'", nativeQuery = true)
+    List<BookEntity> searchBooksByTitle(String title);
+
 }
