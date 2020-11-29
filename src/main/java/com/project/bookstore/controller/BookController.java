@@ -28,7 +28,7 @@ public class BookController {
      * @throws Exception
      */
     @GetMapping("/getAllBooks")
-    public List<BookEntity> getAllBooks(@RequestParam(required = false, defaultValue = "1") Integer pageno) throws Exception {
+    public List<BookEntity> getAllBooks(@RequestParam(required = false, defaultValue = "1") Integer pageno) {
         try {
             return bookService.getAllBooks(pageno);
         }catch (Exception e) {
@@ -39,7 +39,7 @@ public class BookController {
 
     /* returns books based on category name */
     @GetMapping("/findByCategory")
-    public List<BookEntity> findBooksByCategory(@RequestParam String category) throws Exception {
+    public List<BookEntity> findBooksByCategory(@RequestParam String category) {
         try {
             return bookService.getBooksByCategory(category);
         }catch (Exception e) {
@@ -53,7 +53,7 @@ public class BookController {
      * @return List of all Category
      * */
     @GetMapping("/getAllCategory")
-    public List<String> getAllCategory() throws Exception {
+    public List<String> getAllCategory() {
         try {
             return bookService.getAllCategory();
         }catch (Exception e) {
@@ -68,7 +68,7 @@ public class BookController {
      * @apiNote for both client and partners
      */
     @GetMapping("/getProductInfo")
-    public String getBookInfo(@RequestParam(name = "bid")String bid){
+    public String getBookInfo(@RequestParam(name = "bid") int bid){
         log.debug(String.format("Entered getProductInfo for bid: %s", bid));
         ObjectMapper mapper = new ObjectMapper();
         try{

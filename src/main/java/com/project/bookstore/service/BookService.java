@@ -60,8 +60,8 @@ public class BookService {
         return categories;
     }
 
-    public BookEntity getBookInfo(String bid){
-        if(StringUtils.isEmpty(bid)){
+    public BookEntity getBookInfo(int bid){
+        if(bid < 0){
             return null;
         }
         return bookRepository.findBookEntityByBid(bid);
