@@ -7,7 +7,7 @@ import javax.persistence.Id;
 public class BookEntity {
 
     @Id
-    public String bid;
+    public int bid;
     public String title;
     public String author;
     public String format;
@@ -19,7 +19,7 @@ public class BookEntity {
     public BookEntity() {
     }
 
-    public BookEntity(String bid, String title, String author, String format, Double stars, Double price, String category, String images) {
+    public BookEntity(int bid, String title, String author, String format, Double stars, Double price, String category, String images) {
         this.bid = bid;
         this.title = title;
         this.author = author;
@@ -30,11 +30,11 @@ public class BookEntity {
         this.images = images;
     }
 
-    public String getBid() {
+    public int getBid() {
         return bid;
     }
 
-    public void setBid(String bid) {
+    public void setBid(int bid) {
         this.bid = bid;
     }
 
