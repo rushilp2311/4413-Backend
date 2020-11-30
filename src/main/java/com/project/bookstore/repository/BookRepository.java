@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 //Repository for CRUD operation
-public interface BookRepository extends CrudRepository<BookEntity, String> {
+public interface BookRepository extends CrudRepository<BookEntity, Integer> {
 
     //Custom method to get 10 books at a time
     @Query(value = "select * from BOOK limit 10 offset ?1",nativeQuery = true)
@@ -22,7 +22,8 @@ public interface BookRepository extends CrudRepository<BookEntity, String> {
     @Query(value = "select * from book where bid = :bid", nativeQuery = true)
     BookEntity findBookEntityByBid(int bid);
 
-    @Query(value = "select * from book where upper(title) like '%' || upper(?1) || '%'", nativeQuery = true)
+    @Query(value = "select * from book where upper(title) like '%' || upper(?1) || '%' order by CATEGORY", nativeQuery = true)
     List<BookEntity> searchBooksByTitle(String title);
+
 
 }
