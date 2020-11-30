@@ -25,7 +25,7 @@ public class UserService {
       return Util.getJsonResponse(WConstants.INVALID_USER_SIGNUP_DATA, null);
     }
 
-    if(userRepository.isUserExist(userEntity.getEmail())){
+    if(userRepository.isUserEmailExist(userEntity.getEmail())){
       json.put("message", "User already exists. Please try logging in.");
       return json.toString();
     }
@@ -55,6 +55,10 @@ public class UserService {
     json.put("userId", user.getUser_id());
     json.put("status", WConstants.RESPONSE_SUCCESS);
     return json.toString();
+  }
+
+  public boolean isUserExist(String userId){
+    return userRepository.findUserByUserId(userId) != null;
   }
 
 }

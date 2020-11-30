@@ -4,13 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.bookstore.common.Util;
 import com.project.bookstore.common.WConstants;
 import com.project.bookstore.model.BookEntity;
+import com.project.bookstore.model.ReviewEntity;
 import com.project.bookstore.service.BookService;
+import com.project.bookstore.service.ReviewService;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,6 +24,8 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+    @Autowired
+    private ReviewService reviewService;
 
     /**
      * @param pageno
@@ -87,7 +92,6 @@ public class BookController {
     }
 
     /**
-     *
      * @param title: book title/seach query
      * @return list of all books containing that title word
      */
@@ -98,8 +102,28 @@ public class BookController {
             return bookService.searchBooksByTitle(title);
         } catch (Exception e){
             log.error(e.getMessage(), e);
+            return new ArrayList<>();
+        }
+    }
+
+    /* get Reviews for a book */
+    @GetMapping("/getReviews")
+    public List<ReviewEntity> getReviewsForBook(@RequestParam(name = "bid") int bid){
+        try{
+            return reviewService.getReviewsForBook(bid);
+        } catch (Exception e){
+            log.error(e.getMessage(), e);
             return null;
         }
+    }
+
+    /* Add a review for a book */
+    @PostMapping("/addReview")
+    public String addReview(@RequestParam(name = "bid") int bid, @RequestParam(name = "userId") String userId,
+                            @RequestParam(name = "stars") double stars, @RequestParam(name = "message") String message){
+        log.debug(String.format("Entered addReview for book: %s, user_id: %s", bid, userId));
+
+        return reviewService.addReview(bid, userId, stars, message);
     }
 
 
