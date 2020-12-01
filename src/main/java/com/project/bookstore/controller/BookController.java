@@ -48,9 +48,9 @@ public class BookController {
      */
 
     @GetMapping("/findByCategory")
-    public List<BookEntity> findBooksByCategory(@RequestParam String category) {
+    public List<BookEntity> findBooksByCategory(@RequestParam String category, @RequestParam(required = false, defaultValue = "1") Integer pageno) {
         try {
-            return bookService.getBooksByCategory(category);
+            return bookService.getBooksByCategory(category,pageno);
         }catch (Exception e) {
             log.error(e.getMessage(), e);
             return null;
