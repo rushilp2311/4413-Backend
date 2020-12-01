@@ -22,7 +22,10 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    //Controller to get all books based on page no. Accepts 'pageno' as a query parameter
+    /**
+     * @param pageno
+     * @return List of books per page
+     */
 
     @GetMapping("/getAllBooks")
     public List<BookEntity> getAllBooks(@RequestParam(required = false, defaultValue = "1") Integer pageno) throws Exception {
@@ -34,10 +37,9 @@ public class BookController {
         }
     }
 
-    /*
-     * Controller to get all the categories
+    /**
      * @return List of Category
-     * */
+     */
     @GetMapping("/getAllCategory")
     public List<String> getAllCategory() throws Exception {
         try {
