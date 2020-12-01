@@ -11,6 +11,7 @@ public class WConstants {
   public static final int RESULT_UNKNOWN_ERROR = -10;
 
   // Error Codes
+  public static final int RESULT_INVALID_DATA = -100;
   public static final int INVALID_USER_SIGNUP_DATA = -1;
   public static final int RESULT_USER_ALREADY_EXISTS = -2;
   public static final int RESULT_INVALID_CREDENTIALS = -3;
@@ -30,6 +31,8 @@ public class WConstants {
       return value;
     }
   }
+
+  public static final int REVIEW_MESSAGE_LENGTH = 250; // max 250 character review
 
 
 }

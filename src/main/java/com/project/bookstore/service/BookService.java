@@ -2,6 +2,7 @@ package com.project.bookstore.service;
 
 import com.project.bookstore.model.BookEntity;
 import com.project.bookstore.repository.BookRepository;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,12 +15,13 @@ import java.util.logging.Logger;
 @Service
 public class BookService {
 
+    org.slf4j.Logger log = LoggerFactory.getLogger(BookService.class);
+
     @Autowired
     private BookRepository bookRepository;
 
     public List<BookEntity> getAllBooks(Integer offset) throws Exception {
         if (offset > 0) {
-
             List<BookEntity> books = new ArrayList<>();
             try {
                 books = bookRepository.findAllBook((offset - 1) * 10);
@@ -29,10 +31,20 @@ public class BookService {
             }
             return books;
         }
-        else
-        {
-            Logger LOGGER = Logger.getLogger(BookService.class.getName());
-            LOGGER.log(Level.SEVERE,"Page no cannot be 0");
+        else {
+            log.error("Page no. cannot be 0");
+            return new ArrayList<>();
+        }
+    }
+
+    public List<BookEntity> getBooksByCategory(String category) throws Exception{
+        if(StringUtils.isEmpty(category)){
+            return new ArrayList<>();
+        }
+        try{
+            return bookRepository.getBooksByCategory(category);
+        } catch (Exception e){
+            log.error(e.getMessage(), e);
             return new ArrayList<>();
         }
     }
@@ -48,8 +60,8 @@ public class BookService {
         return categories;
     }
 
-    public BookEntity getBookInfo(String bid){
-        if(StringUtils.isEmpty(bid)){
+    public BookEntity getBookInfo(int bid){
+        if(bid < 0){
             return null;
         }
         return bookRepository.findBookEntityByBid(bid);

@@ -18,6 +18,10 @@ public class Util {
     JSONObject json = new JSONObject();
 
     switch (statusCode){
+      case WConstants.RESULT_INVALID_DATA:
+        json.put("status", WConstants.RESPONSE_FAIL);
+        json.put("message", "Invalid data provided. Please try again.");
+        break;
       case WConstants.INVALID_USER_SIGNUP_DATA:
         json.put("status", WConstants.RESPONSE_FAIL);
         json.put("message", "Data was invalid, please try again.");
