@@ -21,7 +21,6 @@ public class ReviewRepository {
 
   @Autowired
   private EntityManager entityManager;
-
   private Session getSession(){
     return entityManager.unwrap(Session.class);
   }
@@ -33,7 +32,6 @@ public class ReviewRepository {
     query.setParameter("bid", bid);
     return (List<ReviewEntity>)query.getResultList();
   }
-
 
   @Transactional
   public int addReview(int bid, String userId, double stars, String message){

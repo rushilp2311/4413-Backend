@@ -28,9 +28,8 @@ public class BookController {
     private ReviewService reviewService;
 
     /**
-     * @param pageno
-     * @return list of next 10 books based on pageNo offset
-     * @throws Exception
+     * @param pageno - page number/offset
+     * @return list of next 10 books based on pageNo
      */
     @GetMapping("/getAllBooks")
     public List<BookEntity> getAllBooks(@RequestParam(required = false, defaultValue = "1") Integer pageno) {
@@ -68,7 +67,7 @@ public class BookController {
     }
 
     /**
-     * @param bid
+     * @param bid - book id
      * @return book entity as a JSON String (with indentation), otherwise error with status code and message
      * @apiNote for both client and partners
      */

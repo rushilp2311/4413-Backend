@@ -32,6 +32,22 @@ public class WConstants {
     }
   }
 
+  // Order status types
+  public enum OrderStatus{
+    IN_CART(0),
+    ORDERED(1),
+    DENIED(2);
+
+    private final int value;
+    OrderStatus(int value){
+      this.value = value;
+    }
+    public int getValue(){
+      return value;
+    }
+  }
+
+
   public static final int REVIEW_MESSAGE_LENGTH = 250; // max 250 character review
 
 
