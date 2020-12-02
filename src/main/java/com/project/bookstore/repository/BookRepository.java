@@ -13,8 +13,8 @@ public interface BookRepository extends CrudRepository<BookEntity, Integer> {
     @Query(value = "select * from BOOK limit 10 offset ?1",nativeQuery = true)
     List<BookEntity> findAllBook(Integer offset);
 
-    @Query(value = "select * from book where category = ?1", nativeQuery = true)
-    List<BookEntity> getBooksByCategory(String category);
+    @Query(value = "select * from book where category = ?1 limit 10 offset ?2", nativeQuery = true)
+    List<BookEntity> getBooksByCategory(String category,Integer pageno);
 
     @Query(value = "select CATEGORY from book group by CATEGORY", nativeQuery = true)
     List<String> findAllCategory();

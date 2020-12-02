@@ -27,10 +27,11 @@ public class BookController {
     @Autowired
     private ReviewService reviewService;
 
-    /**
-     * @param pageno - page number/offset
-     * @return list of next 10 books based on pageNo
+    /*
+     * @return list of next 10 books based on pageNo offset
+     * @throws Exception
      */
+
     @GetMapping("/getAllBooks")
     public List<BookEntity> getAllBooks(@RequestParam(required = false, defaultValue = "1") Integer pageno) {
         try {
@@ -41,11 +42,15 @@ public class BookController {
         }
     }
 
-    /* returns books based on category name */
+
+    /**
+     * @return List of Category
+     */
+
     @GetMapping("/findByCategory")
-    public List<BookEntity> findBooksByCategory(@RequestParam String category) {
+    public List<BookEntity> findBooksByCategory(@RequestParam String category, @RequestParam(required = false, defaultValue = "1") Integer pageno) {
         try {
-            return bookService.getBooksByCategory(category);
+            return bookService.getBooksByCategory(category,pageno);
         }catch (Exception e) {
             log.error(e.getMessage(), e);
             return null;
@@ -56,6 +61,7 @@ public class BookController {
      * Controller to get all the categories
      * @return List of all Category
      * */
+
     @GetMapping("/getAllCategory")
     public List<String> getAllCategory() {
         try {

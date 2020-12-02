@@ -37,12 +37,12 @@ public class BookService {
         }
     }
 
-    public List<BookEntity> getBooksByCategory(String category) throws Exception{
+    public List<BookEntity> getBooksByCategory(String category,Integer pageno) throws Exception{
         if(StringUtils.isEmpty(category)){
             return new ArrayList<>();
         }
         try{
-            return bookRepository.getBooksByCategory(category);
+            return bookRepository.getBooksByCategory(category,pageno);
         } catch (Exception e){
             log.error(e.getMessage(), e);
             return new ArrayList<>();
