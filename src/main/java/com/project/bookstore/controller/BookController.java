@@ -5,6 +5,7 @@ import com.project.bookstore.common.Util;
 import com.project.bookstore.common.WConstants;
 import com.project.bookstore.model.BookEntity;
 import com.project.bookstore.model.ReviewEntity;
+import com.project.bookstore.model.ReviewInputData;
 import com.project.bookstore.service.BookService;
 import com.project.bookstore.service.ReviewService;
 import org.json.JSONObject;
@@ -124,11 +125,17 @@ public class BookController {
 
     /* Add a review for a book */
     @PostMapping("/addReview")
-    public String addReview(@RequestParam(name = "bid") int bid, @RequestParam(name = "userId") String userId,
-                            @RequestParam(name = "stars") double stars, @RequestParam(name = "message") String message){
-        log.debug(String.format("Entered addReview for book: %s, user_id: %s", bid, userId));
+    public String addReview(@RequestBody String data){
+        log.debug(String.format("Entered addReview for data: %s", data));
 
-        return reviewService.addReview(bid, userId, stars, message);
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            ReviewInputData inputData = mapper.readValue(data, ReviewInputData.class);
+            return reviewService.addReview(inputData);
+        } catch (Exception e){
+            log.error(e.getMessage(), e);
+            return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);
+        }
     }
 
 

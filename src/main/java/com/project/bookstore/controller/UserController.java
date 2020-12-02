@@ -4,16 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.bookstore.common.Util;
 import com.project.bookstore.common.WConstants;
 import com.project.bookstore.model.UserEntity;
+import com.project.bookstore.model.UserLoginInputData;
+import com.project.bookstore.model.UserSignupInputData;
 import com.project.bookstore.service.UserService;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -25,12 +24,14 @@ public class UserController {
   UserService userService;
 
   @RequestMapping(value = "/signup", method = RequestMethod.POST)
-  public String signup(@RequestParam (name = "firstName") String first_name, @RequestParam(name = "lastName") String last_name,
-                       @RequestParam (name = "email") String email, @RequestParam (name = "password") String password){
-    log.debug(String.format("Entered user signup for user: %s, email: %s", first_name, email));
+  public String signup(@RequestBody String data){
+    log.debug(String.format("Entered user signup for data: %s", data));
 
     try {
-      UserEntity user = new UserEntity(null, first_name, last_name, email, password, 0);
+      ObjectMapper mapper = new ObjectMapper();
+      UserSignupInputData inputData = mapper.readValue(data, UserSignupInputData.class);
+      UserEntity user = new UserEntity(null, inputData.getFirstName(), inputData.getLastName(),
+              inputData.getEmail(), inputData.getPassword(), 0);
       return userService.singupUser(user);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
@@ -40,11 +41,13 @@ public class UserController {
   }
 
   @RequestMapping(value = "/login", method = RequestMethod.POST)
-  public String login(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password){
-    log.debug(String.format("Entered user signup for: %s", email));
+  public String login(@RequestBody String data){
+    log.debug(String.format("Entered user signup for: %s", data));
 
     try{
-      return userService.loginUser(email, password);
+      ObjectMapper mapper = new ObjectMapper();
+      UserLoginInputData inputData = mapper.readValue(data, UserLoginInputData.class);
+      return userService.loginUser(inputData);
     } catch (Exception e){
       log.error(e.getMessage(), e);
       return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);
