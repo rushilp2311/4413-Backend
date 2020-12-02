@@ -1,7 +1,10 @@
 package com.project.bookstore.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "ORDER", schema = "JRV77878", catalog = "")
@@ -10,6 +13,20 @@ public class OrderEntity {
   private String userId;
   private Date orderDate;
   private Integer status;
+
+  @OneToMany(mappedBy = "order")
+  private List<OrderDetailEntity> orderDetails;
+
+//  @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderDetailEntity", targetEntity = OrderDetailEntity.class, fetch = FetchType.EAGER)
+//  private List<OrderDetailEntity> itemList;
+//
+//  public List<OrderDetailEntity> getItemList() {
+//    return itemList;
+//  }
+//
+//  public void setItemList(List<OrderDetailEntity> itemList) {
+//    this.itemList = itemList;
+//  }
 
   @Id
   @Column(name = "ORDER_ID")
@@ -50,6 +67,8 @@ public class OrderEntity {
   public void setStatus(Integer status) {
     this.status = status;
   }
+
+
 
   @Override
   public boolean equals(Object o) {

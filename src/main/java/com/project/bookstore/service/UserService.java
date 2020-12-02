@@ -43,7 +43,7 @@ public class UserService {
     JSONObject json = new JSONObject();
 
     UserEntity user = userRepository.findUser(email);
-    if(user == null){ // user not found
+    if(user == null){ // if user not found
       return Util.getJsonResponse(WConstants.RESULT_USER_DOES_NOT_EXIST, email);
     }
     if(!encoder.matches(password, user.getPassword())){ // if user found but incorrect password is entered

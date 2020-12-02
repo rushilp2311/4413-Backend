@@ -11,6 +11,28 @@ public class OrderDetailEntity {
   private Integer quantity;
   private Double price;
 
+  @ManyToOne
+//  @JoinColumn(name = "ORDER_ID")
+  private OrderEntity orderEntity;
+
+//  public OrderDetailEntity getOrder() {
+//    return orderDetailEntity;
+//  }
+//
+//  public void setOrder(OrderDetailEntity entity) {
+//    this.orderDetailEntity = entity;
+//  }
+
+  public OrderDetailEntity() {
+  }
+
+  public OrderDetailEntity(int orderId, int bid, Integer quantity, Double price) {
+    this.orderId = orderId;
+    this.bid = bid;
+    this.quantity = quantity;
+    this.price = price;
+  }
+
   @Id
   @Column(name = "ORDER_ID")
   public int getOrderId() {

@@ -73,7 +73,7 @@ public class BookController {
     }
 
     /**
-     * @param bid
+     * @param bid - book id
      * @return book entity as a JSON String (with indentation), otherwise error with status code and message
      * @apiNote for both client and partners
      */

@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 
 import javax.xml.bind.DatatypeConverter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.MessageDigest;
 
 public class Util {
@@ -53,6 +55,7 @@ public class Util {
    * @param input String to hash
    * @return String hashed
    */
+  @Deprecated
   public static String sha1(String input) {
     String sha1 = null;
     try {
@@ -63,6 +66,13 @@ public class Util {
       log.error("Error hashing password.");
     }
     return sha1;
+  }
+
+
+  public static double roundDouble(double value){
+    BigDecimal bd = BigDecimal.valueOf(value);
+    bd = bd.setScale(2, RoundingMode.HALF_UP);
+    return bd.doubleValue();
   }
 
 
