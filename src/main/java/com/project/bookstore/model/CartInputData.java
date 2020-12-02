@@ -4,20 +4,20 @@ import java.util.List;
 
 public class CartInputData {
   private String userId;
-  private List<CartItemInputData> itemList;
+  private List<OrderDetailEntity> itemList;
 
   public CartInputData() { }
 
-  public CartInputData(String userId, List<CartItemInputData> itemList) {
+  public CartInputData(String userId, List<OrderDetailEntity> itemList) {
     this.userId = userId;
     this.itemList = itemList;
   }
 
-  public List<CartItemInputData> getItemList() {
+  public List<OrderDetailEntity> getItemList() {
     return itemList;
   }
 
-  public void setItemList(List<CartItemInputData> itemList) {
+  public void setItemList(List<OrderDetailEntity> itemList) {
     this.itemList = itemList;
   }
 
