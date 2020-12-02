@@ -3,6 +3,7 @@ package com.project.bookstore.service;
 import com.project.bookstore.common.Util;
 import com.project.bookstore.common.WConstants;
 import com.project.bookstore.model.UserEntity;
+import com.project.bookstore.model.UserLoginInputData;
 import com.project.bookstore.repository.UserRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +40,14 @@ public class UserService {
     return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);
   }
 
-  public String loginUser(String email, String password){
+  public String loginUser(UserLoginInputData data){
     JSONObject json = new JSONObject();
 
-    UserEntity user = userRepository.findUser(email);
+    UserEntity user = userRepository.findUser(data.getEmail());
     if(user == null){ // if user not found
-      return Util.getJsonResponse(WConstants.RESULT_USER_DOES_NOT_EXIST, email);
+      return Util.getJsonResponse(WConstants.RESULT_USER_DOES_NOT_EXIST, data.getEmail());
     }
-    if(!encoder.matches(password, user.getPassword())){ // if user found but incorrect password is entered
+    if(!encoder.matches(data.getPassword(), user.getPassword())){ // if user found but incorrect password is entered
       return Util.getJsonResponse(WConstants.RESULT_INVALID_CREDENTIALS, user.getUser_id());
     }
     json.put("userType", user.getUser_type());
