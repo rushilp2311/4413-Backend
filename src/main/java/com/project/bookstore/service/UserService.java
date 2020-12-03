@@ -20,19 +20,20 @@ public class UserService {
 
   public String singupUser(UserEntity userEntity){
     JSONObject json = new JSONObject();
-    json.put("status", WConstants.RESPONSE_SUCCESS);
 
     if(!userEntity.isValid()){
       return Util.getJsonResponse(WConstants.INVALID_USER_SIGNUP_DATA, null);
     }
 
     if(userRepository.isUserEmailExist(userEntity.getEmail())){
+      json.put("status", WConstants.RESPONSE_FAIL);
       json.put("message", "User already exists. Please try logging in.");
       return json.toString();
     }
 
     userEntity.setPassword(encoder.encode(userEntity.getPassword()));
     if(userRepository.signupUser(userEntity) == 1){
+      json.put("status", WConstants.RESPONSE_SUCCESS);
       json.put("message", "Sign up successful for user: " + userEntity.getEmail());
       return json.toString();
     }

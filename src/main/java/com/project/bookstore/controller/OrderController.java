@@ -7,6 +7,7 @@ import com.project.bookstore.common.WConstants;
 import com.project.bookstore.model.CartInputData;
 import com.project.bookstore.model.CartItemInputData;
 import com.project.bookstore.model.InputData;
+import com.project.bookstore.model.RemoveItemInputData;
 import com.project.bookstore.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,7 @@ public class OrderController {
    * @return list of cart items
    */
   @GetMapping("/getCart")
-  public String getCartItems(@RequestBody String data){
+  public String getCart(@RequestBody String data){
     log.debug("Entered /getCartItems with data: " + data);
     if(StringUtils.isEmpty(data)){
       return Util.getJsonResponse(WConstants.RESULT_INVALID_DATA, null);
@@ -79,6 +80,27 @@ public class OrderController {
     try {
       InputData inputData = mapper.readValue(data, InputData.class);
       return orderService.getCartItems(inputData.getUserId());
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);
+    }
+  }
+
+  /**
+   * @param data - userId + bid (of the book being removed)
+   * @return status + message
+   */
+  @PostMapping("/removeCartItem")
+  public String removeCartItem(@RequestBody String data){
+    log.debug("Entered /removeFromCart with data: " + data);
+    if(StringUtils.isEmpty(data)){
+      return Util.getJsonResponse(WConstants.RESULT_INVALID_DATA, null);
+    }
+
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      RemoveItemInputData inputData = mapper.readValue(data, RemoveItemInputData.class);
+      return orderService.removeCartItem(inputData);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);

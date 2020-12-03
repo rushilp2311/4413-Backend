@@ -96,4 +96,34 @@ public class OrderService {
     return json.toString();
   }
 
+  public String removeCartItem(RemoveItemInputData data) {
+    JSONObject json = new JSONObject();
+    OrderEntity order = orderRepository.findCartByUserId(data.getUserId());
+
+    // remove cart item
+    if(orderRepository.removeCartItem(order.getOrderId(), data.getBid()) != 1){
+      return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, data.getUserId());
+    }
+
+    json.put("status", WConstants.RESPONSE_SUCCESS);
+    json.put("message", "Item successfully removed.");
+    return json.toString();
+  }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
