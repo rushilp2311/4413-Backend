@@ -29,14 +29,18 @@ public class UserEntity {
   @Basic
   @Column
   private Integer user_type;
+  @Basic
+  @Column
+  private String address_id;
 
-  public UserEntity(String user_id, String first_name, String last_name, String email, String password, Integer user_type) {
+  public UserEntity(String user_id, String first_name, String last_name, String email, String password, Integer user_type, String address_id) {
     this.user_id = user_id;
     this.first_name = first_name;
     this.last_name = last_name;
     this.email = email;
     this.password = password;
     this.user_type = user_type;
+    this.address_id = address_id;
   }
 
   public UserEntity() {
@@ -88,6 +92,14 @@ public class UserEntity {
 
   public void setUser_type(Integer user_type) {
     this.user_type = user_type;
+  }
+
+  public String getAddress_id() {
+    return address_id;
+  }
+
+  public void setAddress_id(String address_id) {
+    this.address_id = address_id;
   }
 
   @Override

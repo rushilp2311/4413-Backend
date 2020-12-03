@@ -131,4 +131,21 @@ public class OrderRepository {
     }
   }
 
+  @Transactional
+  public int removeCartItem(int orderId, int bid){
+    int res = 0;
+    try{
+      Session session = getSession();
+      // If the same book exists in the cart, update it's quantity. If user adds different book then insert new entry as usual.
+      Query<?> query = session.createNativeQuery("delete from ORDER_DETAIL where ORDER_ID = :orderId and BID = :bid");
+      query.setParameter("orderId", orderId);
+      query.setParameter("bid", bid);
+      res = query.executeUpdate();
+      return res;
+    } catch (Exception e){
+      log.error(e.getMessage(), e);
+      return WConstants.RESULT_UNKNOWN_ERROR;
+    }
+  }
+
 }

@@ -3,9 +3,7 @@ package com.project.bookstore.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.bookstore.common.Util;
 import com.project.bookstore.common.WConstants;
-import com.project.bookstore.model.UserEntity;
-import com.project.bookstore.model.UserLoginInputData;
-import com.project.bookstore.model.UserSignupInputData;
+import com.project.bookstore.model.*;
 import com.project.bookstore.service.UserService;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -31,7 +29,7 @@ public class UserController {
       ObjectMapper mapper = new ObjectMapper();
       UserSignupInputData inputData = mapper.readValue(data, UserSignupInputData.class);
       UserEntity user = new UserEntity(null, inputData.getFirstName(), inputData.getLastName(),
-              inputData.getEmail(), inputData.getPassword(), 0);
+              inputData.getEmail(), inputData.getPassword(), 0, null);
       return userService.singupUser(user);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
@@ -42,7 +40,7 @@ public class UserController {
 
   @RequestMapping(value = "/login", method = RequestMethod.POST)
   public String login(@RequestBody String data){
-    log.debug(String.format("Entered user signup for: %s", data));
+    log.debug(String.format("Entered user /login for: %s", data));
 
     try{
       ObjectMapper mapper = new ObjectMapper();
@@ -54,4 +52,31 @@ public class UserController {
     }
   }
 
+  @RequestMapping(value = "/addAddress", method = RequestMethod.POST)
+  public String addAddress(@RequestBody String data){
+    log.debug(String.format("Entered /addAddress for: %s", data));
+
+    try{
+      ObjectMapper mapper = new ObjectMapper();
+      AddressInputData inputData = mapper.readValue(data, AddressInputData.class);
+      return userService.addUserAddress(inputData);
+    } catch (Exception e){
+      log.error(e.getMessage(), e);
+      return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);
+    }
+  }
+
+  @RequestMapping(value = "/getAddress", method = RequestMethod.GET)
+  public String getAddress(@RequestBody String data){
+    log.debug(String.format("Entered /getAddress for: %s", data));
+
+    try{
+      ObjectMapper mapper = new ObjectMapper();
+      InputData inputData = mapper.readValue(data, InputData.class);
+      return userService.getAddress(inputData.getUserId());
+    } catch (Exception e){
+      log.error(e.getMessage(), e);
+      return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);
+    }
+  }
 }
