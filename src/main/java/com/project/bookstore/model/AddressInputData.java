@@ -1,12 +1,7 @@
 package com.project.bookstore.model;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "ADDRESS", schema = "JRV77878", catalog = "")
-public class AddressEntity {
-  private String addressId;
-  private Integer streetNo;
+public class AddressInputData extends InputData{
+  private int streetNo;
   private String streetName;
   private String city;
   private String province;
@@ -14,28 +9,17 @@ public class AddressEntity {
   private String zip;
   private String phone;
 
-  @Id
-  @Column(name = "ADDRESS_ID")
-  public String getAddressId() {
-    return addressId;
+  public AddressInputData() {
   }
 
-  public void setAddressId(String addressId) {
-    this.addressId = addressId;
-  }
-
-  @Basic
-  @Column(name = "STREET_NO")
-  public Integer getStreetNo() {
+  public int getStreetNo() {
     return streetNo;
   }
 
-  public void setStreetNo(Integer streetNo) {
+  public void setStreetNo(int streetNo) {
     this.streetNo = streetNo;
   }
 
-  @Basic
-  @Column(name = "STREET_NAME")
   public String getStreetName() {
     return streetName;
   }
@@ -44,8 +28,6 @@ public class AddressEntity {
     this.streetName = streetName;
   }
 
-  @Basic
-  @Column(name = "CITY")
   public String getCity() {
     return city;
   }
@@ -54,8 +36,6 @@ public class AddressEntity {
     this.city = city;
   }
 
-  @Basic
-  @Column(name = "PROVINCE")
   public String getProvince() {
     return province;
   }
@@ -64,8 +44,6 @@ public class AddressEntity {
     this.province = province;
   }
 
-  @Basic
-  @Column(name = "COUNTRY")
   public String getCountry() {
     return country;
   }
@@ -74,8 +52,6 @@ public class AddressEntity {
     this.country = country;
   }
 
-  @Basic
-  @Column(name = "ZIP")
   public String getZip() {
     return zip;
   }
@@ -84,8 +60,6 @@ public class AddressEntity {
     this.zip = zip;
   }
 
-  @Basic
-  @Column(name = "PHONE")
   public String getPhone() {
     return phone;
   }
@@ -93,5 +67,4 @@ public class AddressEntity {
   public void setPhone(String phone) {
     this.phone = phone;
   }
-
 }
