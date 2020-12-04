@@ -110,6 +110,56 @@ public class OrderService {
     return json.toString();
   }
 
+  public String confirmOrder(CreditCardInputData data) {
+    JSONObject json = new JSONObject();
+    json.put("status", WConstants.RESPONSE_FAIL);
+
+    OrderEntity order = orderRepository.findCartByUserId(data.getUserId());
+    if(order == null){
+      json.put("message", "Cart is empty. Please try again later.");
+      return json.toString();
+    }
+
+    // Check number of order submit attempts. If > 3, put order in Denied Status
+    if (order.getSubmit_attempts() >= WConstants.ORDER_MAX_SUBMIT_ATTEMPTS){
+      json.put("error", -1);
+      json.put("message", "This order is DENIED due to 3 unsuccessful attempts.");
+      return json.toString(4);
+    }
+
+    // Payment Details validation
+    if(!data.isValid()){
+      StringBuilder errorMsg = new StringBuilder("Error: ");
+      if(!data.isNameValid()){
+        errorMsg.append("Name INVALID (max 30 characters)");
+      }
+      if (!data.isNumberValid()){
+        errorMsg.append("Credit card number INVALID. ");
+      }
+      if(!data.isExpiryValid()){
+        errorMsg.append("Expiry date INVALID. ");
+      }
+      if(!data.isCvvValid()){
+        errorMsg.append("CVV INVALID. ");
+      }
+      json.put("message", errorMsg.toString());
+
+      // increment submit_attempts for order
+      int res = orderRepository.incrementSubmitAttempts(data.getUserId(), order.getOrderId());
+      return json.toString(4);
+    }
+
+    // Submit order
+    if(orderRepository.submitOrder(data.getUserId(), order.getOrderId()) != 1){
+      return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, data.getUserId());
+    }
+
+    json.put("status", WConstants.RESPONSE_SUCCESS);
+    json.put("message", "The order is successfully processed!");
+    json.put("orderId", "0000000" + order.getOrderId());
+    return json.toString(4);
+  }
+
 
 }
 

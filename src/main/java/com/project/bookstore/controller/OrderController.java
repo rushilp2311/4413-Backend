@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.bookstore.common.Util;
 import com.project.bookstore.common.WConstants;
-import com.project.bookstore.model.CartInputData;
-import com.project.bookstore.model.CartItemInputData;
-import com.project.bookstore.model.InputData;
-import com.project.bookstore.model.RemoveItemInputData;
+import com.project.bookstore.model.*;
 import com.project.bookstore.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +98,23 @@ public class OrderController {
     try {
       RemoveItemInputData inputData = mapper.readValue(data, RemoveItemInputData.class);
       return orderService.removeCartItem(inputData);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);
+    }
+  }
+
+  @PostMapping("confirmOrder")
+  public String confirmOrder(@RequestBody String data){
+    log.debug("Entered /confirmOrder with data: " + data);
+    if(StringUtils.isEmpty(data)){
+      return Util.getJsonResponse(WConstants.RESULT_INVALID_DATA, null);
+    }
+
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      CreditCardInputData inputData = mapper.readValue(data, CreditCardInputData.class);
+      return orderService.confirmOrder(inputData);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);

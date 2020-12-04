@@ -13,6 +13,7 @@ public class OrderEntity {
   private String userId;
   private Date orderDate;
   private Integer status;
+  private Integer submit_attempts;
 
   @OneToMany(mappedBy = "order")
   private List<OrderDetailEntity> orderDetails;
@@ -68,7 +69,15 @@ public class OrderEntity {
     this.status = status;
   }
 
+  @Basic
+  @Column(name = "SUBMIT_ATTEMPTS")
+  public Integer getSubmit_attempts() {
+    return submit_attempts;
+  }
 
+  public void setSubmit_attempts(Integer submit_attempts) {
+    this.submit_attempts = submit_attempts;
+  }
 
   @Override
   public boolean equals(Object o) {
