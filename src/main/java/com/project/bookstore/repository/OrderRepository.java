@@ -34,9 +34,10 @@ public class OrderRepository {
   public OrderEntity findCartByUserId(String userId){
     try{
       Session session = getSession();
-      Query<?> query = session.createNativeQuery("select * from ORDER where USER_ID = :userId and STATUS = :status limit 1").addEntity(OrderEntity.class);
+      Query<?> query = session.createNativeQuery("select * from ORDER where USER_ID = :userId and (STATUS = :status or STATUS = :statuss) limit 1").addEntity(OrderEntity.class);
       query.setParameter("userId", userId);
       query.setParameter("status", WConstants.OrderStatus.IN_CART.getValue());
+      query.setParameter("statuss", WConstants.OrderStatus.DENIED.getValue());
       return (OrderEntity)query.getSingleResult();
     } catch(Exception e){
       log.error(e.getMessage(), e);
@@ -140,6 +141,41 @@ public class OrderRepository {
       Query<?> query = session.createNativeQuery("delete from ORDER_DETAIL where ORDER_ID = :orderId and BID = :bid");
       query.setParameter("orderId", orderId);
       query.setParameter("bid", bid);
+      res = query.executeUpdate();
+      return res;
+    } catch (Exception e){
+      log.error(e.getMessage(), e);
+      return WConstants.RESULT_UNKNOWN_ERROR;
+    }
+  }
+
+  @Transactional
+  public int incrementSubmitAttempts(String userId, int orderId){
+    int res = 0;
+    try{
+      Session session = getSession();
+      // If the same book exists in the cart, update it's quantity. If user adds different book then insert new entry as usual.
+      Query<?> query = session.createNativeQuery("update ORDER set SUBMIT_ATTEMPTS = SUBMIT_ATTEMPTS + 1 where USER_ID = :userId and ORDER_ID = :orderId");
+      query.setParameter("orderId", orderId);
+      query.setParameter("userId", userId);
+      res = query.executeUpdate();
+      return res;
+    } catch (Exception e){
+      log.error(e.getMessage(), e);
+      return WConstants.RESULT_UNKNOWN_ERROR;
+    }
+  }
+
+  @Transactional
+  public int submitOrder(String userId, int orderId){
+    int res = 0;
+    try{
+      Session session = getSession();
+      // If the same book exists in the cart, update it's quantity. If user adds different book then insert new entry as usual.
+      Query<?> query = session.createNativeQuery("update ORDER set STATUS = :status where USER_ID = :userId and ORDER_ID = :orderId");
+      query.setParameter("status", WConstants.OrderStatus.ORDERED.getValue());
+      query.setParameter("orderId", orderId);
+      query.setParameter("userId", userId);
       res = query.executeUpdate();
       return res;
     } catch (Exception e){

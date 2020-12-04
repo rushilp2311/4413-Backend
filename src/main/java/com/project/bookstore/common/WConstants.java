@@ -49,6 +49,7 @@ public class WConstants {
 
 
   public static final int REVIEW_MESSAGE_LENGTH = 250; // max 250 character review
+  public static final int ORDER_MAX_SUBMIT_ATTEMPTS = 3; // max 250 character review
 
 
 }
