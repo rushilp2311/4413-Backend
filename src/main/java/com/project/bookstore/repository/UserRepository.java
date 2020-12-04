@@ -76,6 +76,20 @@ public class UserRepository {
   }
 
   @Transactional
+  public UserEntity findAdminByUserId(String userId){
+    Session session = getSession();
+    try{
+      Query<?> query = session.createNativeQuery("select * from user where USER_ID = :userId and USER_TYPE = :user_type").addEntity(UserEntity.class);
+      query.setParameter("userId", userId);
+      query.setParameter("user_type", WConstants.UserType.ADMIN.getValue());
+      return (UserEntity)query.getSingleResult();
+    } catch (Exception e){
+      log.error(e.getMessage(), e);
+      return null;
+    }
+  }
+
+  @Transactional
   public UserEntity findUserByUserId(String userId){
     Session session = getSession();
     try{

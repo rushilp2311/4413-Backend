@@ -63,6 +63,7 @@ public class UserService {
     return userRepository.findUserByUserId(userId) != null;
   }
 
+  public boolean isUserAdmin(String adminUserId){ return userRepository.findAdminByUserId(adminUserId) != null; }
 
   public String addUserAddress(AddressInputData data){
     if(!this.isUserExist(data.getUserId())){
