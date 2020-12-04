@@ -33,4 +33,17 @@ public class AdminController {
       return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, "admin error");
     }
   }
+
+  @GetMapping("/getTopSold")
+  public String getTop10(@RequestParam String userId){
+    if(StringUtils.isEmpty(userId)){
+      return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, userId);
+    }
+    try{
+      return adminService.getTopSoldBooks(userId);
+    } catch (Exception e){
+      log.error(e.getMessage(), e);
+      return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, "admin error");
+    }
+  }
 }
