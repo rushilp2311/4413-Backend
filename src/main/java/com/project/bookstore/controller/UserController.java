@@ -38,6 +38,12 @@ public class UserController {
 
   }
 
+
+  /*
+    ---        Admin credentials
+    ---        email:   admin@admin.com
+    ---        pwd:     admin123
+   */
   @RequestMapping(value = "/login", method = RequestMethod.POST)
   public String login(@RequestBody String data){
     log.debug(String.format("Entered user /login for: %s", data));

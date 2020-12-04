@@ -64,9 +64,10 @@ public class UserRepository {
   public UserEntity findUser(String email){
     Session session = getSession();
     try{
-      Query<?> query = session.createNativeQuery("select * from user where EMAIL = :email and USER_TYPE = :user_type").addEntity(UserEntity.class);
+      Query<?> query = session.createNativeQuery("select * from user where EMAIL = :email and (USER_TYPE = :user_type1 or USER_TYPE = :user_type2)").addEntity(UserEntity.class);
       query.setParameter("email", email);
-      query.setParameter("user_type", WConstants.UserType.USER.getValue());
+      query.setParameter("user_type1", WConstants.UserType.USER.getValue());
+      query.setParameter("user_type2", WConstants.UserType.ADMIN.getValue());
       return (UserEntity)query.getSingleResult();
     } catch (Exception e){
       log.error(e.getMessage(), e);
