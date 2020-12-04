@@ -63,20 +63,18 @@ public class OrderController {
   }
 
   /**
-   * @param data - userId of the user
+   * @param userId
    * @return list of cart items
    */
   @GetMapping("/getCart")
-  public String getCart(@RequestBody String data){
-    log.debug("Entered /getCartItems with data: " + data);
-    if(StringUtils.isEmpty(data)){
+  public String getCart(@RequestParam (name = "userId") String userId){
+    log.debug("Entered /getCartItems with data: " + userId);
+    if(StringUtils.isEmpty(userId)){
       return Util.getJsonResponse(WConstants.RESULT_INVALID_DATA, null);
     }
 
-    ObjectMapper mapper = new ObjectMapper();
     try {
-      InputData inputData = mapper.readValue(data, InputData.class);
-      return orderService.getCartItems(inputData.getUserId());
+      return orderService.getCartItems(userId);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);
