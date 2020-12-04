@@ -123,7 +123,7 @@ public class OrderService {
     // Check number of order submit attempts. If > 3, put order in Denied Status
     if (order.getSubmit_attempts() >= WConstants.ORDER_MAX_SUBMIT_ATTEMPTS){
       json.put("error", -1);
-      json.put("message", "This order is DENIED due to 3 unsuccessful attempts.");
+      json.put("message", "Credit Card Authorization Failed.");
       return json.toString(4);
     }
 
@@ -155,7 +155,7 @@ public class OrderService {
     }
 
     json.put("status", WConstants.RESPONSE_SUCCESS);
-    json.put("message", "The order is successfully processed!");
+    json.put("message", "Order Successfully Completed.");
     json.put("orderId", "0000000" + order.getOrderId());
     return json.toString(4);
   }
