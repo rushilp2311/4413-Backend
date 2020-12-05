@@ -46,7 +46,7 @@ public class Util {
       json.put("user", user_id);
     }
 
-    return json.toString();
+    return json.toString(4);
   }
 
   /**
