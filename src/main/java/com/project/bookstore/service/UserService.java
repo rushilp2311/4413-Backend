@@ -53,6 +53,7 @@ public class UserService {
     }
     json.put("userType", user.getUser_type());
     json.put("firstName", user.getFirst_name());
+    json.put("email", user.getEmail());
     json.put("lastName", user.getLast_name());
     json.put("userId", user.getUser_id());
     json.put("status", WConstants.RESPONSE_SUCCESS);
