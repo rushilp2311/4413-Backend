@@ -3,9 +3,7 @@ package com.project.bookstore.repository;
 import com.project.bookstore.common.Util;
 import com.project.bookstore.common.WConstants;
 import com.project.bookstore.controller.UserController;
-import com.project.bookstore.model.CartItem;
-import com.project.bookstore.model.OrderDetailEntity;
-import com.project.bookstore.model.OrderEntity;
+import com.project.bookstore.model.*;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
@@ -15,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.math.BigInteger;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,22 +87,6 @@ public class OrderRepository {
       return WConstants.RESULT_UNKNOWN_ERROR;
     }
   }
-
-//  todo: Come back to this later, and try to make it work
-//  @Transactional
-//  public int addCartItems(int orderId, List<OrderDetailEntity> itemList){
-//    Session session = getSession();
-//    try{
-//      Query<?> query = session.createNativeQuery("insert into ORDER_DETAIL (order_id, bid, quantity, price) " +
-//              "select o.order_id, o.bid, o.quantity, o.price from ORDER_DETAIL o where (o.order_id, o.bid, o.QUANTITY, o.PRICE) in :itemList");
-////      query.setParameter("orderId", orderId);
-//      query.setParameter("itemList", itemList);
-//      return query.executeUpdate();
-//    } catch (Exception e){
-//      log.error(e.getMessage(), e);
-//      return WConstants.RESULT_UNKNOWN_ERROR;
-//    }
-//  }
 
   @Transactional
   public List<CartItem> returnCartData(int orderId){
@@ -181,6 +165,36 @@ public class OrderRepository {
     } catch (Exception e){
       log.error(e.getMessage(), e);
       return WConstants.RESULT_UNKNOWN_ERROR;
+    }
+  }
+
+  @Transactional
+  public List<OrderProcessedData> returnOrderByBid(int bid){
+    try{
+      Session session = getSession();
+      Query<?> query = session.createNativeQuery("select B.title, B.price, O.* from order O " +
+              "join ORDER_DETAIL OD on O.ORDER_ID = OD.ORDER_ID " +
+              "join BOOK B on OD.BID = B.BID " +
+              "where O.STATUS = 1 and B.BID = :bid");
+      query.setParameter("bid", bid);
+      List<Object[]> itemList = (List<Object[]>)query.getResultList();
+
+      List<OrderProcessedData> orders = new ArrayList<>();
+      for(Object[] orderData: itemList){
+        OrderProcessedData item = new OrderProcessedData();
+        item.setTitle(String.valueOf(orderData[0]));
+        item.setPrice(Util.roundDouble((Double) orderData[1]));
+        item.setOrderId((int)orderData[2]);
+        item.setUserId(String.valueOf(orderData[3]));
+        item.setOrderDate(((Date)orderData[4]).toString());
+//        BigInteger bg = new BigInteger(String.valueOf(bookData[3]));
+//        item.setQuantity(bg.intValue());
+        orders.add(item);
+      }
+      return orders;
+    } catch (Exception e){
+      log.error(e.getMessage(), e);
+      return null;
     }
   }
 
