@@ -162,8 +162,15 @@ public class OrderService {
 
   public String getOrdersByBid(int bid){
     List<OrderProcessedData> list = orderRepository.returnOrderByBid(bid);
-
     JSONObject mainJson = new JSONObject();
+
+    if(list == null || list.isEmpty()){
+      mainJson.put("status_code", WConstants.RESPONSE_SUCCESS);
+      mainJson.put("status", "Success");
+      mainJson.put("message", "No orders for this book yet!");
+      return mainJson.toString(4);
+    }
+
     mainJson.put("TITLE", list.get(0).getTitle());
     mainJson.put("PRICE", list.get(0).getPrice());
 
@@ -171,8 +178,9 @@ public class OrderService {
     for(OrderProcessedData item: list){
       JSONObject order = new JSONObject();
       order.put("ORDER_ID", item.getOrderId());
-      order.put("USER_ID", item.getUserId());
       order.put("ORDER_DATE", item.getOrderDate());
+      order.put("USER_ID", item.getUserId());
+      order.put("QUANTITY_BOUGHT", item.getQuantity());
       ordersArray.put(order);
     }
 

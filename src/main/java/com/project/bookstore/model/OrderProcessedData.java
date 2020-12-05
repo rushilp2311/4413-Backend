@@ -5,6 +5,16 @@ public class OrderProcessedData {
   private double price;
   private int orderId;
   private String userId;
+  private int quantity;
+
+  public int getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
+  }
+
   private String orderDate;
 
   public OrderProcessedData() {

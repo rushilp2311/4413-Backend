@@ -38,20 +38,14 @@ public class PartnerController {
   @GetMapping(value = "/getProductInfo", produces = MediaType.APPLICATION_JSON_VALUE)
   public String getBookInfo(@RequestParam(name = "bid") int bid){
     log.debug(String.format("Entered getProductInfo (REST) for bid: %s", bid));
-    ObjectMapper mapper = new ObjectMapper();
-    try{
-      JSONObject json = new JSONObject();
-      BookEntity book = bookService.getBookInfo(bid);
-      if(book == null){
-        json.put("status", WConstants.RESPONSE_FAIL);
-        json.put("message", "Please enter a valid book/product ID.");
-        return json.toString(4);
-      }
-      return mapper.writeValueAsString(book);
-    } catch (Exception e) {
-      log.error(e.getMessage(), e);
-      return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);
+    JSONObject json = new JSONObject();
+    BookEntity book = bookService.getBookInfo(bid);
+    if(book == null){
+      json.put("status", WConstants.RESPONSE_FAIL);
+      json.put("message", "Please enter a valid book/product ID.");
+      return json.toString(4);
     }
+    return new JSONObject(book).toString(4);
   }
 
   @GetMapping(value = "/getOrdersByPartNumber", produces = MediaType.APPLICATION_JSON_VALUE)

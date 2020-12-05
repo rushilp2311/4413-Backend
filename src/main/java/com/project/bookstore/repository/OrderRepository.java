@@ -172,7 +172,7 @@ public class OrderRepository {
   public List<OrderProcessedData> returnOrderByBid(int bid){
     try{
       Session session = getSession();
-      Query<?> query = session.createNativeQuery("select B.title, B.price, O.* from order O " +
+      Query<?> query = session.createNativeQuery("select B.title, B.price, OD.QUANTITY, O.* from order O " +
               "join ORDER_DETAIL OD on O.ORDER_ID = OD.ORDER_ID " +
               "join BOOK B on OD.BID = B.BID " +
               "where O.STATUS = 1 and B.BID = :bid");
@@ -184,11 +184,12 @@ public class OrderRepository {
         OrderProcessedData item = new OrderProcessedData();
         item.setTitle(String.valueOf(orderData[0]));
         item.setPrice(Util.roundDouble((Double) orderData[1]));
-        item.setOrderId((int)orderData[2]);
-        item.setUserId(String.valueOf(orderData[3]));
-        item.setOrderDate(((Date)orderData[4]).toString());
-//        BigInteger bg = new BigInteger(String.valueOf(bookData[3]));
-//        item.setQuantity(bg.intValue());
+        BigInteger bg = new BigInteger(String.valueOf(orderData[2]));
+        item.setQuantity(bg.intValue());
+        item.setOrderId((int)orderData[3]);
+        item.setUserId(String.valueOf(orderData[4]));
+        item.setOrderDate(((Date)orderData[5]).toString());
+
         orders.add(item);
       }
       return orders;
