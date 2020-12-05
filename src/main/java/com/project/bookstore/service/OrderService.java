@@ -160,6 +160,27 @@ public class OrderService {
     return json.toString(4);
   }
 
+  public String getOrdersByBid(int bid){
+    List<OrderProcessedData> list = orderRepository.returnOrderByBid(bid);
+
+    JSONObject mainJson = new JSONObject();
+    mainJson.put("TITLE", list.get(0).getTitle());
+    mainJson.put("PRICE", list.get(0).getPrice());
+
+    JSONArray ordersArray = new JSONArray();
+    for(OrderProcessedData item: list){
+      JSONObject order = new JSONObject();
+      order.put("ORDER_ID", item.getOrderId());
+      order.put("USER_ID", item.getUserId());
+      order.put("ORDER_DATE", item.getOrderDate());
+      ordersArray.put(order);
+    }
+
+    mainJson.put("ORDERS", ordersArray);
+
+    return mainJson.toString(4);
+
+  }
 
 }
 
