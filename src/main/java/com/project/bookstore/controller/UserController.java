@@ -73,13 +73,11 @@ public class UserController {
   }
 
   @RequestMapping(value = "/getAddress", method = RequestMethod.GET)
-  public String getAddress(@RequestBody String data){
-    log.debug(String.format("Entered /getAddress for: %s", data));
+  public String getAddress(@RequestParam String userId){
+    log.debug(String.format("Entered /getAddress for: %s", userId));
 
     try{
-      ObjectMapper mapper = new ObjectMapper();
-      InputData inputData = mapper.readValue(data, InputData.class);
-      return userService.getAddress(inputData.getUserId());
+      return userService.getAddress(userId);
     } catch (Exception e){
       log.error(e.getMessage(), e);
       return Util.getJsonResponse(WConstants.RESULT_UNKNOWN_ERROR, null);

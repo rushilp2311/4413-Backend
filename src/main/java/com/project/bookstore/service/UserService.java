@@ -94,9 +94,8 @@ public class UserService {
     }
 
     json = new JSONObject(address);
-    return json.toString();
+    return json.toString(4);
 
-//    return json.toString(4);
   }
 
 }
