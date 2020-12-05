@@ -37,7 +37,7 @@ public class OrderRepository {
       Query<?> query = session.createNativeQuery("select * from ORDER where USER_ID = :userId and (STATUS = :status or STATUS = :statuss) limit 1").addEntity(OrderEntity.class);
       query.setParameter("userId", userId);
       query.setParameter("status", WConstants.OrderStatus.IN_CART.getValue());
-      query.setParameter("statuss", WConstants.OrderStatus.DENIED.getValue());
+//      query.setParameter("statuss", WConstants.OrderStatus.DENIED.getValue());
       return (OrderEntity)query.getSingleResult();
     } catch(Exception e){
       log.error(e.getMessage(), e);
