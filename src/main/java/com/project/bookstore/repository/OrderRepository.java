@@ -34,7 +34,7 @@ public class OrderRepository {
   public OrderEntity findCartByUserId(String userId){
     try{
       Session session = getSession();
-      Query<?> query = session.createNativeQuery("select * from ORDER where USER_ID = :userId and (STATUS = :status or STATUS = :statuss) limit 1").addEntity(OrderEntity.class);
+      Query<?> query = session.createNativeQuery("select * from ORDER where USER_ID = :userId and (STATUS = :status) limit 1").addEntity(OrderEntity.class);
       query.setParameter("userId", userId);
       query.setParameter("status", WConstants.OrderStatus.IN_CART.getValue());
 //      query.setParameter("statuss", WConstants.OrderStatus.DENIED.getValue());
