@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>4413-Backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>4413-Backend</name>
 	<description>EECS 4413 Project</description>
 
